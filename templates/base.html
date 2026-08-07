@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+
+<title>{{ page.title }}</title>
+
+<link rel="stylesheet"
+href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<nav>
+
+<a href="/">Home</a>
+<a href="/entry1">Entry 1</a>
+<a href="/entry2">Entry 2</a>
+<a href="/entry3">Entry 3</a>
+<a href="/entry4">Entry 4</a>
+
+</nav>
+
+<hr>
+
+{% block content %}
+{% endblock %}
+
+</body>
+
+</html>

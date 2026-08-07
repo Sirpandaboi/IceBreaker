@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+    <title>Home</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+<body>
+
+<h1>Diary</h1>
+
+<p>
+
+Welcome.
+
+There are several diary pages.
+
+Somewhere inside them is a hidden code.
+
+</p>
+
+<ul>
+
+<li><a href="/page1">Entry 1</a></li>
+
+<li><a href="/page2">Entry 2</a></li>
+
+<li><a href="/page3">Entry 3</a></li>
+
+</ul>
+
+{% if unlocked %}
+
+<hr>
+
+<h2>New Entry Available</h2>
+
+<a href="/final">Continue...</a>
+
+{% endif %}
+
+</body>
+
+</html>
