@@ -1,50 +1,2609 @@
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 
 <head>
 
-    <title>Home</title>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Icebreaker</title>
 
     <link rel="stylesheet"
           href="{{ url_for('static', filename='style.css') }}">
 
 </head>
 
+
 <body>
 
-<h1>Diary</h1>
+<div class="topbar">
 
-<p>
+    <div class="brand">
 
-Welcome.
+        <span>Icebreaker</span>
 
-There are several diary pages.
+    </div>
 
-Somewhere inside them is a hidden code.
+    <div class="dropdown">
 
-</p>
+        <button
+            class="dropdown-button"
+            onclick="toggleDropdown('flaskMenu')">
 
-<ul>
+            Flask
 
-<li><a href="/page1">Entry 1</a></li>
+            <span class="dropdown-arrow">
+                ▾
+            </span>
 
-<li><a href="/page2">Entry 2</a></li>
+        </button>
 
-<li><a href="/page3">Entry 3</a></li>
 
-</ul>
+        <div
+            id="flaskMenu"
+            class="dropdown-menu">
 
-{% if unlocked %}
+            <div class="dropdown-item selected">
+                Flask
+            </div>
 
-<hr>
+            <div class="dropdown-item">
+                Django
+            </div>
 
-<h2>New Entry Available</h2>
+            <div class="dropdown-item">
+                FastAPI
+            </div>
 
-<a href="/final">Continue...</a>
+            <div class="dropdown-item">
+                I. "app."
+            </div>
 
-{% endif %}
+        </div>
+
+    </div>
+
+    <div class="dropdown">
+
+        <button
+            class="dropdown-button"
+            onclick="toggleDropdown('pythonMenu')">
+
+            Python
+
+            <span class="dropdown-arrow">
+                ▾
+            </span>
+
+        </button>
+
+
+        <div
+            id="pythonMenu"
+            class="dropdown-menu">
+
+            <div class="dropdown-item selected">
+                Python 3.14
+            </div>
+
+            <div class="dropdown-item">
+                Python 3.13
+            </div>
+
+            <div class="dropdown-item">
+                Python 3.12
+            </div>
+
+            <div class="dropdown-item">
+                Python 3.11
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="top-space"></div>
+
+    <button
+        id="themeButton"
+        class="theme-button"
+        onclick="toggleTheme()">
+
+        ◐
+
+    </button>
+
+    <button
+        class="run-button"
+        onclick="runCode()">
+
+        ▶ Run Code
+
+    </button>
+
+    <button
+        class="save-button"
+        onclick="saveCode()">
+
+        Save
+
+    </button>
+
+    <button
+        class="cloud-button"
+        onclick="window.location.href='/cloud'">
+
+        ☁ Create Cloud Dev Env
+
+    </button>
+
+    <button
+        class="login-button"
+        onclick="window.location.href='/login'">
+
+        ↪ Login
+
+    </button>
+
+
+</div>
+
+<div class="status-line">
+
+    <span class="green-dot"></span>
+
+    <span>
+        Save your file to access it anywhere, anytime.
+    </span>
+
+</div>
+
+<div class="workspace">
+
+    <aside class="file-explorer">
+
+        <div class="explorer-title">
+            WORKSPACE FILES
+        </div>
+
+        <div class="folder">
+
+            <div
+                class="folder-name"
+                onclick="toggleFolder('static')">
+
+                <span id="static-arrow">▾</span>
+
+                <span class="folder-icon">▱</span>
+
+                static
+
+            </div>
+
+
+            <div
+                id="static"
+                class="folder-contents">
+
+                <div
+                    class="file"
+                    onclick="openFile('style.css', this)">
+
+                    <span class="file-icon css">
+                        #
+                    </span>
+
+                    style.css
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="folder">
+
+            <div
+                class="folder-name"
+                onclick="toggleFolder('templates')">
+
+                <span id="templates-arrow">▾</span>
+
+                <span class="folder-icon">▱</span>
+
+                templates
+
+            </div>
+
+
+            <div
+                id="templates"
+                class="folder-contents">
+
+                <div
+                    class="file"
+                    onclick="openFile('cloud.html', this)">
+
+                    <span class="file-icon html">
+                        ◇
+                    </span>
+
+                    cloud.html
+
+                </div>
+
+                <div
+                    class="file"
+                    onclick="openFile('index.html', this)">
+
+                    <span class="file-icon html">
+                        ◇
+                    </span>
+
+                    index.html
+
+                </div>
+
+                <div
+                    class="file"
+                    onclick="openFile('login.html', this)">
+
+                    <span class="file-icon html">
+                        ◇
+                    </span>
+
+                    login.html
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="root-files">
+
+            <div
+                class="file active-file"
+                onclick="openFile('Icebreaker.py', this)">
+
+                <span class="file-icon python">
+                    ◆
+                </span>
+
+                Icebreaker.py
+
+            </div>
+
+            <div
+                class="file active-file"
+                onclick="openFile('Password.txt', this)">
+
+                <span class="file-icon python">
+                    ◆
+                </span>
+
+                Password.txt
+
+            </div>
+
+        </div>
+
+    </aside>
+
+    <main class="editor">
+
+
+        <div class="editor-tab">
+
+            <span class="python-icon">
+                ◆
+            </span>
+
+            <span id="currentFile">
+                Icebreaker.py
+            </span>
+
+        </div>
+
+
+        <div class="editor-body">
+
+            <div id="lineNumbers" class="line-numbers"></div>
+
+            <textarea
+                id="codeInput"
+                spellcheck="false"
+                autocomplete="off"
+                autocorrect="off"
+                autocapitalize="off"
+                placeholder="# Enter your code here..."
+            ></textarea>
+
+        </div>
+
+    </main>
+
+    <aside class="terminal">
+
+
+        <div class="terminal-tabs">
+
+            <button
+                class="terminal-tab active"
+                onclick="changeTab(this, 'shell')">
+
+                Shell
+
+            </button>
+
+
+            <button
+                class="terminal-tab"
+                onclick="changeTab(this, 'web')">
+
+                Web
+
+            </button>
+
+
+            <button
+                class="terminal-tab"
+                onclick="changeTab(this, 'gui')">
+
+                GUI
+
+            </button>
+
+
+            <button
+                class="terminal-tab"
+                onclick="changeTab(this, 'packages')">
+
+                Packages
+
+            </button>
+
+        </div>
+
+
+        <div
+            class="terminal-output">
+
+            <div class="terminal-heading">
+
+                --- MOCKUP VIRTUAL CONSOLE ---
+
+            </div>
+
+
+            <div class="terminal-prompt">
+
+                <span class="prompt-symbol">
+                    $
+                </span>
+
+                <span id="terminalText"></span>
+
+                <span class="cursor">
+                    █
+                </span>
+
+            </div>
+
+
+            <div
+                id="results"
+                class="results">
+
+            </div>
+
+        </div>
+
+    </aside>
+
+</div>
+
+<div class="bottom-bar">
+
+    <span>
+        ● II "run"
+    </span>
+
+
+    <div class="bottom-right">
+
+        <span>UTF-8</span>
+        <span>LF</span>
+        <span>Python</span>
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+const files = {
+
+    "Icebreaker.py":
+`from flask import Flask, render_template, request, jsonify
+
+app = Flask(__name__)
+
+CORRECT_CODE = 'print("the_truth_is_hidden")'
+
+LINK_1 = "https://example.com/link1"
+LINK_2 = "https://example.com/link2"
+
+@app.route("/")
+def index():
+    return render_template("index.html")
+
+@app.route("/login")
+def login():
+    return render_template("login.html")
+
+@app.route("/cloud")
+def cloud():
+    return render_template("cloud.html")
+
+@app.route("/run", methods=["POST"])
+def run_code():
+
+    data = request.get_json()
+
+    if not data:
+        return jsonify({
+            "success": False,
+            "output": [
+                "ERROR: No source code received."
+            ]
+        })
+
+    code = data.get("code", "")
+
+    if code == CORRECT_CODE:
+
+        return jsonify({
+            "success": True,
+
+            "output": [
+                "Compiling source...",
+                "Compilation successful.",
+                "",
+                "Process finished with exit code 0.",
+                "",
+                "Two resources have been unlocked."
+            ],
+
+            "links": [
+                {
+                    "name": "Resource 01",
+                    "url": LINK_1
+                },
+                {
+                    "name": "Resource 02",
+                    "url": LINK_2
+                }
+            ]
+        })
+
+    else:
+
+        return jsonify({
+            "success": False,
+
+            "output": [
+                "Compiling source...",
+                "",
+                "ERROR: Compilation failed.",
+                "SyntaxError: unexpected token",
+                "at line 1, column 1",
+                "",
+                "Process finished with exit code 1."
+            ]
+        })
+
+if __name__ == "__main__":
+    app.run(debug=True)`,
+
+"cloud.html":
+`<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cloud Development Environment</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+</head>
+
+<body class="special-page">
+
+    <div class="special-container">
+
+        <div class="special-logo">
+            Icebreaker
+        </div>
+
+        <h1>Cloud Development Environment</h1>
+
+        <p class="special-description">
+            Create a new isolated development
+            environment in the cloud.
+        </p>
+
+        <div class="cloud-status">
+            <span class="green-dot"></span>
+            Environment services available
+        </div>
+
+        <button
+            class="special-button"
+            onclick="createEnvironment()">
+
+            Create Environment
+
+        </button>
+
+        <div
+            id="cloudMessage"
+            class="cloud-message">
+        </div>
+
+        <a href="/" class="back-link">
+            ← Return to compiler
+        </a>
+
+    </div>
+
+    <script>
+
+        function createEnvironment() {
+
+            const message =
+                document.getElementById("cloudMessage");
+
+            message.textContent =
+                "Provisioning development environment...";
+
+            setTimeout(function() {
+
+                message.textContent =
+                    "Environment created successfully.";
+
+            }, 1500);
+        }
+
+    <\/script>
 
 </body>
 
+<\/html>`,
+
+"Password.txt":
+`Enter the password in the correct order throughout the website to unlock the resources. The password is hidden in (ALMOST) plain sight.
+
+I.      = 
+II.     = 
+III.    = 
+IV.     = `,
+
+    "index.html":
+`<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev Workspace Dashboard</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --accent-color: #38bdf8;
+            --border-color: #334155;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 800px;
+            background-color: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 16px;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            margin: 0;
+            font-size: 1.5rem;
+            color: var(--accent-color);
+        }
+
+        .status-badge {
+            background-color: #059669;
+            color: #ecfdf5;
+            font-size: 0.75rem;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-weight: 600;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 16px;
+        }
+
+        .card h3 {
+            margin: 0 0 8px 0;
+            font-size: 0.875rem;
+            color: #94a3b8;
+        }
+
+        .card p {
+            margin: 0;
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
+
+        .actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            background-color: var(--accent-color);
+            color: #0284c7;
+            color: var(--bg-color);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        button.secondary {
+            background-color: transparent;
+            color: var(--text-color);
+            border: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <header>
+            <h1>System Status</h1>
+            <span class="status-badge">Operational</span>
+        </header>
+
+        <main>
+            <div class="grid">
+                <div class="card">
+                    <h3>Active Environment</h3>
+                    <p>Production v2.4</p>
+                </div>
+                <div class="card">
+                    <h3>Server Uptime</h3>
+                    <p>99.98%</p>
+                </div>
+                <div class="card">
+                    <h3>Latency</h3>
+                    <p>24 ms</p>
+                </div>
+            </div>
+
+            <div class="actions">
+                <button id="refreshBtn">Refresh Data</button>
+                <button class="secondary" id="logBtn">View Logs</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        document.getElementById('refreshBtn').addEventListener('click', () => {
+            alert('Metrics refreshed successfully!');
+        });
+
+        document.getElementById('logBtn').addEventListener('click', () => {
+            console.log('Fetching system logs...');
+        });
+    <\/script>
+</body>
+<\/html>`,
+
+    "login.html":
+`<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Login - Icebreaker</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body class="special-page">
+
+
+<div class="special-container">
+
+    <div class="special-logo">
+        Icebreaker
+    </div>
+
+
+    <h1>Sign in</h1>
+
+    <p class="special-description">
+        Sign in to your development environment.
+    </p>
+
+
+    <form>
+
+        <input
+            type="text"
+            placeholder="Username"
+            class="special-input"
+        >
+
+
+        <input
+            type="password"
+            placeholder="Password"
+            class="special-input"
+        >
+
+
+        <button
+            type="button"
+            class="special-button">
+
+            Sign in
+
+        </button>
+
+    </form>
+
+
+    <a href="/" class="back-link">
+        ← Return to compiler
+    </a>
+
+</div>
+
+
+</body>
+
+<\/html>`,
+
+    "style.css":
+`* {
+    box-sizing: border-box;
+}
+
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+
+body {
+
+    background: #03090b;
+
+    color: #d4dfe2;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+    overflow: hidden;
+
+}
+
+.topbar {
+
+    height: 42px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 9px;
+
+    background: #061114;
+
+    border-bottom:
+        1px solid #173238;
+
+}
+
+
+.brand {
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 12px;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+}
+
+
+.brand-symbol {
+
+    margin-right: 7px;
+
+    color: #eeeeee;
+
+}
+
+
+.language-select {
+
+    height: 30px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    padding: 0 12px;
+
+    margin-left: 5px;
+
+    background: #101c20;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+
+}
+
+
+.language-select span {
+
+    color: #809196;
+
+}
+
+
+.top-space {
+
+    flex: 1;
+
+}
+
+
+.topbar button {
+
+    font-family: inherit;
+
+    border: 0;
+
+    cursor: pointer;
+
+}
+
+
+.theme-button {
+
+    background: transparent;
+
+    color: #819298;
+
+    padding: 10px;
+
+}
+
+
+.run-button {
+
+    background: #10a96b;
+
+    color: white;
+
+    padding: 8px 15px;
+
+    border-radius: 5px;
+
+    margin-right: 6px;
+
+    font-size: 12px;
+
+}
+
+
+.run-button:hover {
+
+    background: #13bc78;
+
+}
+
+
+.save-button {
+
+    background: #0b1d21;
+
+    color: #8fa7ac;
+
+    padding: 7px 13px;
+
+    border:
+        1px solid #1d4951;
+
+    border-radius: 5px;
+
+    margin-right: 6px;
+
+}
+
+
+.cloud-button {
+
+    background: #087d8d;
+
+    color: white;
+
+    padding: 8px 13px;
+
+    border-radius: 5px;
+
+    margin-right: 6px;
+
+    font-size: 11px;
+
+}
+
+
+.login-button {
+
+    background: transparent;
+
+    color: #91a3a7;
+
+    padding: 8px 10px;
+
+}
+
+
+.menu-button {
+
+    background: transparent;
+
+    color: #91a3a7;
+
+    font-size: 17px;
+
+}
+
+.status-line {
+
+    height: 27px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-left: 12px;
+
+    gap: 6px;
+
+    background: #061114;
+
+    color: #55c17d;
+
+    font-size: 10px;
+
+}
+
+
+.green-dot {
+
+    width: 7px;
+
+    height: 7px;
+
+    border-radius: 50%;
+
+    background: #37bb6d;
+
+}
+
+.workspace {
+
+    height:
+        calc(100vh - 69px);
+
+    display: flex;
+
+}
+
+.editor {
+
+    width: 64%;
+
+    height: 100%;
+
+    background: #071013;
+
+}
+
+
+.editor-tab {
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 12px;
+
+    background: #09171b;
+
+    border-bottom:
+        1px solid #183239;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 12px;
+
+}
+
+
+.python-icon {
+
+    color: #b9dc68;
+
+    margin-right: 8px;
+
+}
+
+
+.tab-close {
+
+    margin-left: auto;
+
+    color: #61757b;
+
+    font-size: 16px;
+
+}
+
+
+.editor-body {
+
+    display: flex;
+
+    height:
+        calc(100% - 36px);
+
+}
+
+
+.line-numbers {
+
+    width: 45px;
+
+    padding-top: 14px;
+
+    text-align: right;
+
+    padding-right: 14px;
+
+    color: #3d555b;
+
+    background: #061013;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 12px;
+
+    line-height: 22px;
+
+    user-select: none;
+
+}
+
+
+#codeInput {
+
+    flex: 1;
+
+    height: 100%;
+
+    resize: none;
+
+    border: none;
+
+    outline: none;
+
+    padding:
+        14px
+        15px;
+
+    background: #071013;
+
+    color: #d5e0e2;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 13px;
+
+    line-height: 22px;
+
+    caret-color: #ffffff;
+
+}
+
+
+#codeInput::placeholder {
+
+    color: #385158;
+
+}
+
+.terminal {
+
+    width: 36%;
+
+    height: 100%;
+
+    background: #020708;
+
+    border-left:
+        1px solid #183238;
+
+}
+
+
+.terminal-tabs {
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    background: #071013;
+
+    border-bottom:
+        1px solid #183238;
+
+}
+
+
+.terminal-tab {
+
+    height: 36px;
+
+    padding: 0 13px;
+
+    background: transparent;
+
+    border: none;
+
+    color: #63777c;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+}
+
+
+.terminal-tab.active {
+
+    color: #d1dcdf;
+
+    border-bottom:
+        1px solid #11a6a6;
+
+}
+
+
+.terminal-output {
+
+    padding:
+        10px 12px;
+
+    font-family:
+        Consolas,
+        "Courier New",
+        monospace;
+
+    font-size: 12px;
+
+    line-height: 19px;
+
+}
+
+
+.terminal-heading {
+
+    color: #778b90;
+
+    margin-bottom: 10px;
+
+}
+
+
+.terminal-prompt {
+
+    color: #aab9bd;
+
+}
+
+
+.prompt-symbol {
+
+    color: #67c76c;
+
+    margin-right: 6px;
+
+}
+
+
+.cursor {
+
+    color: #c5d0d3;
+
+}
+
+
+.results {
+
+    margin-top: 10px;
+
+}
+
+
+.output-line {
+
+    white-space: pre-wrap;
+
+}
+
+
+.success {
+
+    color: #5dcc7b;
+
+}
+
+
+.error {
+
+    color: #d66d6d;
+
+}
+
+
+.result-link {
+
+    display: block;
+
+    width: fit-content;
+
+    margin-top: 9px;
+
+    color: #51c9d4;
+
+    text-decoration: none;
+
+    padding: 4px 0;
+
+}
+
+
+.result-link:hover {
+
+    color: #80e0e7;
+
+    text-decoration: underline;
+
+}
+
+.bottom-bar {
+
+    position: fixed;
+
+    bottom: 0;
+
+    left: 0;
+
+    width: 100%;
+
+    height: 25px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding: 0 11px;
+
+    background: #07181c;
+
+    border-top:
+        1px solid #173238;
+
+    color: #779095;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 10px;
+
+}
+
+
+.bottom-right {
+
+    margin-left: auto;
+
+    display: flex;
+
+    gap: 18px;
+
+}
+
+.file-explorer {
+
+    width: 185px;
+
+    min-width: 185px;
+
+    height: 100%;
+
+    background: #061013;
+
+    border-right:
+        1px solid #183238;
+
+    overflow-y: auto;
+
+    font-family:
+        "Segoe UI",
+        Arial,
+        sans-serif;
+
+}
+
+
+.explorer-title {
+
+    height: 36px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-left: 13px;
+
+    color: #6e858b;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    letter-spacing: .5px;
+
+    border-bottom:
+        1px solid #132c32;
+
+}
+
+
+.folder-name {
+
+    height: 27px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-left: 9px;
+
+    gap: 6px;
+
+    color: #9aadb1;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+}
+
+
+.folder-name:hover {
+
+    background: #0b1d21;
+
+}
+
+
+.folder-icon {
+
+    color: #7d9297;
+
+    font-size: 12px;
+
+}
+
+
+.folder-contents {
+
+    display: block;
+
+}
+
+
+.file {
+
+    height: 27px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-left: 35px;
+
+    gap: 7px;
+
+    color: #7e9398;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+}
+
+
+.root-files .file {
+
+    padding-left: 20px;
+
+}
+
+
+.file:hover {
+
+    background: #0c1d21;
+
+    color: #b9c8cb;
+
+}
+
+
+.active-file {
+
+    background: #10282d;
+
+    color: #d0dde0;
+
+}
+
+
+.file-icon {
+
+    width: 11px;
+
+    text-align: center;
+
+    font-size: 10px;
+
+}
+
+
+.file-icon.python {
+
+    color: #c5dd6a;
+
+}
+
+
+.file-icon.css {
+
+    color: #4da7d7;
+
+}
+
+
+.file-icon.html {
+
+    color: #e77d52;
+
+}
+
+
+.file-icon.text {
+
+    color: #899da1;
+
+}
+
+
+.root-files {
+
+    margin-top: 4px;
+
+}
+
+.file-explorer::-webkit-scrollbar {
+
+    width: 6px;
+
+}
+
+
+.file-explorer::-webkit-scrollbar-track {
+
+    background: #061013;
+
+}
+
+
+.file-explorer::-webkit-scrollbar-thumb {
+
+    background: #1b353b;
+
+}
+
+
+.file-explorer::-webkit-scrollbar-thumb:hover {
+
+    background: #28515a;
+
+}
+
+.dropdown {
+
+    position: relative;
+
+    margin-left: 5px;
+
+}
+
+
+.dropdown-button {
+
+    height: 30px;
+
+    padding: 0 12px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 7px;
+
+    background: #101c20;
+
+    color: #a9b9bd;
+
+    border: none;
+
+    border-radius: 5px;
+
+    font-size: 12px;
+
+    cursor: pointer;
+
+}
+
+
+.dropdown-button:hover {
+
+    background: #15262a;
+
+}
+
+
+.dropdown-arrow {
+
+    color: #70868b;
+
+}
+
+
+.dropdown-menu {
+
+    display: none;
+
+    position: absolute;
+
+    top: 34px;
+
+    left: 0;
+
+    min-width: 150px;
+
+    background: #0b171a;
+
+    border: 1px solid #214249;
+
+    border-radius: 5px;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.5);
+
+    z-index: 1000;
+
+    overflow: hidden;
+
+}
+
+
+.dropdown-menu.show {
+
+    display: block;
+
+}
+
+
+.dropdown-item {
+
+    padding: 9px 13px;
+
+    color: #8da1a6;
+
+    font-size: 11px;
+
+    cursor: pointer;
+
+}
+
+
+.dropdown-item:hover {
+
+    background: #10272c;
+
+    color: #d9e4e6;
+
+}
+
+
+.dropdown-item.selected {
+
+    color: #4dc5b7;
+
+}
+
+body.light-mode {
+
+    background: #f1f4f5;
+
+    color: #20282b;
+
+}
+
+
+body.light-mode .topbar {
+
+    background: #ffffff;
+
+    border-bottom-color: #ccd7da;
+
+}
+
+
+body.light-mode .brand {
+
+    color: #20282b;
+
+}
+
+
+body.light-mode .dropdown-button {
+
+    background: #edf1f2;
+
+    color: #344448;
+
+}
+
+
+body.light-mode .dropdown-button:hover {
+
+    background: #e1e7e9;
+
+}
+
+
+body.light-mode .dropdown-menu {
+
+    background: #ffffff;
+
+    border-color: #ccd7da;
+
+    box-shadow:
+        0 8px 20px rgba(0,0,0,.15);
+
+}
+
+
+body.light-mode .dropdown-item {
+
+    color: #536367;
+
+}
+
+
+body.light-mode .dropdown-item:hover {
+
+    background: #edf2f3;
+
+    color: #20282b;
+
+}
+
+
+body.light-mode .status-line {
+
+    background: #f7f9f9;
+
+    border-bottom-color: #d4dddf;
+
+}
+
+
+body.light-mode .file-explorer {
+
+    background: #f7f9fa;
+
+    border-right-color: #ccd7da;
+
+}
+
+
+body.light-mode .explorer-title {
+
+    color: #65777b;
+
+    border-bottom-color: #d6dfe1;
+
+}
+
+
+body.light-mode .folder-name {
+
+    color: #536367;
+
+}
+
+
+body.light-mode .folder-name:hover {
+
+    background: #e9eff0;
+
+}
+
+
+body.light-mode .file {
+
+    color: #66777b;
+
+}
+
+
+body.light-mode .file:hover {
+
+    background: #e6edef;
+
+}
+
+
+body.light-mode .active-file {
+
+    background: #dce8ea;
+
+    color: #263437;
+
+}
+
+
+body.light-mode .editor {
+
+    background: #ffffff;
+
+}
+
+
+body.light-mode .editor-tab {
+
+    background: #f3f6f7;
+
+    border-bottom-color: #ccd7da;
+
+}
+
+
+body.light-mode .editor-body {
+
+    background: #ffffff;
+
+}
+
+
+body.light-mode .line-numbers {
+
+    background: #f7f9fa;
+
+    color: #91a0a4;
+
+}
+
+
+body.light-mode #codeInput {
+
+    background: #ffffff;
+
+    color: #263437;
+
+}
+
+
+body.light-mode #codeInput::placeholder {
+
+    color: #9aa8ab;
+
+}
+
+
+body.light-mode .terminal {
+
+    background: #f8fafb;
+
+    border-left-color: #ccd7da;
+
+}
+
+
+body.light-mode .terminal-tabs {
+
+    background: #eef2f3;
+
+    border-bottom-color: #ccd7da;
+
+}
+
+
+body.light-mode .terminal-tab {
+
+    color: #7b898c;
+
+}
+
+
+body.light-mode .terminal-tab.active {
+
+    color: #263437;
+
+}
+
+
+body.light-mode .terminal-heading {
+
+    color: #637276;
+
+}
+
+
+body.light-mode .terminal-prompt {
+
+    color: #435256;
+
+}
+
+
+body.light-mode .cursor {
+
+    color: #20282b;
+
+}
+
+
+body.light-mode .bottom-bar {
+
+    background: #e9eff0;
+
+    border-top-color: #ccd7da;
+
+    color: #647579;
+
+}
+
+.special-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    background: #03090b;
+
+}
+
+
+.special-container {
+
+    width: 400px;
+
+    padding: 40px;
+
+    background: #071013;
+
+    border: 1px solid #183238;
+
+    border-radius: 8px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.45);
+
+}
+
+
+.special-logo {
+
+    margin-bottom: 30px;
+
+    color: #d5e0e2;
+
+    font-size: 18px;
+
+    font-weight: 600;
+
+}
+
+
+.special-container h1 {
+
+    margin: 0 0 10px;
+
+    color: #dce6e8;
+
+    font-size: 24px;
+
+}
+
+
+.special-description {
+
+    margin-bottom: 25px;
+
+    color: #71858a;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+
+}
+
+
+.special-input {
+
+    width: 100%;
+
+    height: 40px;
+
+    margin-bottom: 12px;
+
+    padding: 0 12px;
+
+    background: #0c191c;
+
+    color: #dce6e8;
+
+    border:
+        1px solid #214149;
+
+    border-radius: 4px;
+
+    outline: none;
+
+}
+
+
+.special-input:focus {
+
+    border-color: #168c98;
+
+}
+
+
+.special-button {
+
+    width: 100%;
+
+    height: 40px;
+
+    margin-top: 5px;
+
+    border: none;
+
+    border-radius: 4px;
+
+    background: #0b9b71;
+
+    color: white;
+
+    cursor: pointer;
+
+}
+
+
+.special-button:hover {
+
+    background: #0db781;
+
+}
+
+
+.back-link {
+
+    display: block;
+
+    margin-top: 25px;
+
+    color: #53c4ce;
+
+    text-decoration: none;
+
+    font-size: 12px;
+
+}
+
+
+.back-link:hover {
+
+    text-decoration: underline;
+
+}
+
+
+.cloud-status {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+
+    padding: 12px;
+
+    margin-bottom: 18px;
+
+    background: #0a191c;
+
+    border: 1px solid #183a40;
+
+    color: #78a5a9;
+
+    font-size: 12px;
+
+    border-radius: 4px;
+
+}
+
+
+.cloud-message {
+
+    min-height: 20px;
+
+    margin-top: 18px;
+
+    color: #55c47b;
+
+    font-family:
+        Consolas,
+        monospace;
+
+    font-size: 12px;
+
+}`
+
+};
+
+function openFile(filename, element) {
+
+    document.getElementById(
+        "currentFile"
+    ).textContent = filename;
+
+
+    document.getElementById(
+        "codeInput"
+    ).value = files[filename] || "";
+
+
+    document
+        .querySelectorAll(".file")
+        .forEach(function(file) {
+
+            file.classList.remove(
+                "active-file"
+            );
+
+        });
+
+
+    element.classList.add(
+        "active-file"
+    );
+
+
+    updateLineNumbers();
+
+}
+
+function toggleFolder(folderId) {
+
+    const folder =
+        document.getElementById(folderId);
+
+    const arrow =
+        document.getElementById(
+            folderId + "-arrow"
+        );
+
+
+    if (folder.style.display === "none") {
+
+        folder.style.display = "block";
+
+        arrow.textContent = "▾";
+
+    }
+
+    else {
+
+        folder.style.display = "none";
+
+        arrow.textContent = "▸";
+
+    }
+
+}
+
+function toggleDropdown(menuId) {
+
+    const menu =
+        document.getElementById(menuId);
+
+
+    document
+        .querySelectorAll(".dropdown-menu")
+        .forEach(function(otherMenu) {
+
+            if (otherMenu !== menu) {
+
+                otherMenu.classList.remove(
+                    "show"
+                );
+
+            }
+
+        });
+
+
+    menu.classList.toggle("show");
+
+}
+
+window.addEventListener(
+    "click",
+    function(event) {
+
+        if (!event.target.closest(".dropdown")) {
+
+            document
+                .querySelectorAll(".dropdown-menu")
+                .forEach(function(menu) {
+
+                    menu.classList.remove(
+                        "show"
+                    );
+
+                });
+
+        }
+
+    }
+);
+
+function toggleTheme() {
+
+    document.body.classList.toggle(
+        "light-mode"
+    );
+
+
+    const lightMode =
+        document.body.classList.contains(
+            "light-mode"
+        );
+
+
+    localStorage.setItem(
+        "lightMode",
+        lightMode
+    );
+
+
+    const button =
+        document.getElementById(
+            "themeButton"
+        );
+
+
+    if (lightMode) {
+
+        button.textContent = "☀";
+
+    }
+
+    else {
+
+        button.textContent = "◐";
+
+    }
+
+}
+
+window.addEventListener(
+    "load",
+    function() {
+
+        const lightMode =
+            localStorage.getItem(
+                "lightMode"
+            );
+
+
+        if (lightMode === "true") {
+
+            document.body.classList.add(
+                "light-mode"
+            );
+
+
+            document.getElementById(
+                "themeButton"
+            ).textContent = "☀";
+
+        }
+
+    }
+);
+
+async function runCode() {
+
+    const code =
+        document.getElementById(
+            "codeInput"
+        ).value;
+
+
+    const terminal =
+        document.getElementById(
+            "terminalText"
+        );
+
+
+    const results =
+        document.getElementById(
+            "results"
+        );
+
+
+    terminal.textContent =
+        "python main.py";
+
+
+    results.innerHTML = "";
+
+
+    try {
+
+        const response =
+            await fetch("/run", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body: JSON.stringify({
+                    code: code
+                })
+
+            });
+
+
+        const data =
+            await response.json();
+
+
+        data.output.forEach(
+            function(line) {
+
+                const outputLine =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                outputLine.className =
+                    data.success
+                    ? "output-line success"
+                    : "output-line error";
+
+
+                outputLine.textContent =
+                    line;
+
+
+                results.appendChild(
+                    outputLine
+                );
+
+            }
+        );
+
+
+        if (data.success) {
+
+            data.links.forEach(
+                function(link) {
+
+                    const linkElement =
+                        document.createElement(
+                            "a"
+                        );
+
+
+                    linkElement.href =
+                        link.url;
+
+
+                    linkElement.target =
+                        "_blank";
+
+
+                    linkElement.className =
+                        "result-link";
+
+
+                    linkElement.textContent =
+                        "→ " + link.name;
+
+
+                    results.appendChild(
+                        linkElement
+                    );
+
+                }
+            );
+
+        }
+
+    }
+
+    catch (error) {
+
+        results.innerHTML =
+            `<div class="output-line error">
+                ERROR: Unable to connect to compiler.
+            </div>`;
+
+    }
+
+}
+
+function saveCode() {
+
+    const code =
+        document.getElementById(
+            "codeInput"
+        ).value;
+
+
+    localStorage.setItem(
+        "savedCode",
+        code
+    );
+
+
+    document.getElementById(
+        "terminalText"
+    ).textContent =
+        "File saved successfully.";
+
+}
+
+function changeTab(button, tab) {
+
+    document
+        .querySelectorAll(".terminal-tab")
+        .forEach(function(tabButton) {
+
+            tabButton.classList.remove(
+                "active"
+            );
+
+        });
+
+
+    button.classList.add("active");
+
+
+    const terminal =
+        document.getElementById(
+            "terminalText"
+        );
+
+
+    if (tab === "shell") {
+
+        terminal.textContent = "";
+
+    }
+
+    else if (tab === "web") {
+
+        terminal.textContent =
+            "Web environment ready.";
+
+    }
+
+    else if (tab === "gui") {
+
+        terminal.textContent =
+            "IV. \"=True)\"";
+
+    }
+
+    else {
+
+        terminal.textContent =
+            "Package manager ready.";
+
+    }
+
+    
+
+function updateLineNumbers() {
+
+    const editor =
+        document.getElementById("codeInput");
+
+    const lineNumbers =
+        document.getElementById("lineNumbers");
+
+    const lineCount =
+        editor.value.split("\n").length;
+
+    let numbers = "";
+
+    for (let i = 1; i <= lineCount; i++) {
+
+        numbers += `<div>${i}</div>`;
+
+    }
+
+    lineNumbers.innerHTML = numbers;
+
+    lineNumbers.scrollTop = editor.scrollTop;
+}
+
+const codeInput =
+    document.getElementById("codeInput");
+
+codeInput.addEventListener(
+    "input",
+    updateLineNumbers
+);
+
+codeInput.addEventListener(
+    "scroll",
+    function() {
+
+        document.getElementById(
+            "lineNumbers"
+        ).scrollTop = this.scrollTop;
+
+    }
+);
+
+window.addEventListener(
+    "load",
+    function() {
+
+        updateLineNumbers();
+
+    }
+);
+
+}
+
+</script>
+
+
+</body>
 </html>

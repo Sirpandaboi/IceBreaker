@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Cloud Development Environment</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='style.css') }}">
+
+</head>
+
+
+<body class="special-page">
+
+
+<div class="special-container">
+
+    <div class="special-logo">
+        Σ Embedenv
+    </div>
+
+
+    <h1>Cloud Development Environment</h1>
+
+
+    <p class="special-description">
+
+        Create a new isolated development
+        environment in the cloud.
+
+    </p>
+
+
+    <div class="cloud-status">
+
+        <span class="green-dot"></span>
+
+        Environment services available
+
+    </div>
+
+
+    <button
+        class="special-button"
+        onclick="createEnvironment()">
+
+        Create Environment
+
+    </button>
+
+
+    <div
+        id="cloudMessage"
+        class="cloud-message">
+
+    </div>
+
+
+    <a href="/" class="back-link">
+        ← Return to compiler
+    </a>
+
+</div>
+
+
+<script>
+
+function createEnvironment() {
+
+    const message =
+        document.getElementById(
+            "cloudMessage"
+        );
+
+
+    message.textContent =
+        "Provisioning development environment...";
+
+
+    setTimeout(function() {
+
+        message.textContent =
+            "III. \"(debug\"";
+
+    }, 1500);
+
+}
+
+</script>
+
+
+</body>
+
+</html>

@@ -1,42 +1,85 @@
-from flask import Flask, render_template
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
-PASSWORD_INPUT = "ginger"
+CORRECT_CODE = """Enter the password in the correct order throughout the website to unlock the resources. The password is hidden in (ALMOST) plain sight.
 
-PASSWORD = "ginger"
+I.      = app.
+II.     = run
+III.    = (Debug=
+IV.     = True)"""
 
+LINK_1 = "https://www.canva.com/design/DAHR7okqzn8/-CjH4uSSssX8uPfWSWwFPg/edit"
+LINK_2 = "https://example.com/link2"
 
 @app.route("/")
-def home():
+def index():
+    return render_template("index.html")
 
-    unlocked = PASSWORD_INPUT == PASSWORD
+@app.route("/login")
+def login():
+    return render_template("login.html")
 
-    return render_template(
-        "index.html",
-        unlocked=unlocked
-    )
+@app.route("/cloud")
+def cloud():
+    return render_template("cloud.html")
 
+@app.route("/run", methods=["POST"])
+def run_code():
 
-@app.route("/page1")
-def page1():
-    return render_template("page1.html")
+    data = request.get_json()
 
+    if not data:
+        return jsonify({
+            "success": False,
+            "output": [
+                "ERROR: No source code received."
+            ]
+        })
 
-@app.route("/page2")
-def page2():
-    return render_template("page2.html")
+    code = data.get("code", "")
 
+    if code == CORRECT_CODE:
 
-@app.route("/page3")
-def page3():
-    return render_template("page3.html")
+        return jsonify({
+            "success": True,
 
+            "output": [
+                "Compiling source...",
+                "Compilation successful.",
+                "",
+                "Process finished with exit code 0.",
+                "",
+                "Two resources have been unlocked."
+            ],
 
-@app.route("/final")
-def final():
-    return render_template("final.html")
+            "links": [
+                {
+                    "name": "Reward 1: Canva Link",
+                    "url": LINK_1
+                },
+                {
+                    "name": "Reward 2: Website Source Code",
+                    "url": LINK_2
+                }
+            ]
+        })
 
+    else:
+
+        return jsonify({
+            "success": False,
+
+            "output": [
+                "Compiling source...",
+                "",
+                "ERROR: Compilation failed.",
+                "SyntaxError: unexpected token",
+                "at line 1, column 1",
+                "",
+                "Process finished with exit code 1."
+            ]
+        })
 
 if __name__ == "__main__":
     app.run(debug=True)
